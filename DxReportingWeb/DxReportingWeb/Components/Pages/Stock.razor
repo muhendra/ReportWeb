@@ -1,0 +1,767 @@
+﻿@page "/Stock"
+@using DevExpress.Export
+@using DxReportingWeb.Services
+@using System.Globalization
+@attribute [StreamRendering(true)]
+@rendermode InteractiveServer
+@inject StockReportService StockReportService
+
+<style>
+    .highlight-cell {
+        background-color: #ADD8E6 !important; 
+    }
+
+    .modal {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        border-radius: 10px;
+    }
+</style>
+
+<div class="grid-container">
+    @if (isLoading)
+    {
+                <div class="d-flex justify-content-between align-items-center">
+            <div class="w-50 pe-2">
+                <label for="deOverview1" class="demo-text mb-1">
+                    Start Date
+                </label>
+                <DxDateEdit @bind-Date="@DatePickerStart"
+                            CssClass="w-100"
+                            InputId="deOverview1" />
+                <p class="demo-text mt-3">
+                    Selected Date: <b>@DatePickerStart.ToString("dddd, dd MMMM yyyy")</b>
+                </p>
+            </div>
+            <div class="w-50 ps-2">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1 me-2">
+                        <label for="deOverview2" class="demo-text mb-1">
+                            End Date
+                        </label>
+                        <DxDateEdit @bind-Date="@DatePickerEnd"
+                                    CssClass="w-100"
+                                    InputId="deOverview2" />
+                    </div>
+                    <div>
+                        <button class="btn btn-primary mt-4" @onclick="OnSearchClicked">Search</button>
+                    </div>
+                </div>
+                <p class="demo-text mt-3">
+                    Selected Date: <b>@DatePickerEnd.ToString("dddd, dd MMMM yyyy")</b>
+                </p>
+            </div>
+        </div>
+
+        <DxGrid CssClass="mw-1100"
+                ShowSearchBox="true"
+                PagerPosition="GridPagerPosition.Bottom"
+                PageSizeSelectorVisible="true"
+                PageSizeSelectorItems="@(new int[] { 10, 15, 25, 50, 100 })"
+                PageSize="15"
+                ColumnResizeMode="GridColumnResizeMode.ColumnsContainer"
+                TextWrapEnabled="false">
+            <Columns>
+                <DxGridDataColumn Caption="No" FieldName="Nomor" MinWidth="45">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="Code1" FieldName="CODE1">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="Article" FieldName="ARTICLE" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="BOM" FieldName="BOM" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="RECRET" FieldName="REC_RET" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="RET_TRF" FieldName="RET_TRF" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="SHOPEE" FieldName="S_120" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="TOKPED" FieldName="S_127" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="TIKTOK" FieldName="S_131" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ZALORA" FieldName="S_132" MinWidth="90">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="WEB" FieldName="S_G01" MinWidth="80">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="TOTAL SLS" FieldName="SLS" MinWidth="100">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="EOM" FieldName="EOM" MinWidth="80">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ST%" FieldName="STPERSEN" MinWidth="80">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="EOM_DC" FieldName="EOM_DC" MinWidth="80">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="RET_SLS" FieldName="RET_SLS" MinWidth="100">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ADJ" FieldName="ADJ" MinWidth="80">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ADJ_OPN" FieldName="ADJ_OPN" MinWidth="100">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="SLS_RP" FieldName="SLS_RP" MinWidth="140">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="EOM_RP" FieldName="EOM_RP" MinWidth="140">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="SSR" FieldName="ADJ" MinWidth="100">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ORD_NO" FieldName="ORD_NO" MinWidth="100">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="STATUS HARGA" FieldName="STATUS_HARGA" MinWidth="140">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="QTY_ORD" FieldName="QTY_ORD" MinWidth="100">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+            </Columns>
+        </DxGrid>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="w-50 pe-2">
+                <label for="deOverview1" class="demo-text mb-1">
+                    Start Date
+                </label>
+                <DxDateEdit @bind-Date="@DatePickerStart"
+                            CssClass="w-100"
+                            InputId="deOverview1" />
+                <p class="demo-text mt-3">
+                    Selected Date: <b>@DatePickerStart.ToString("dddd, dd MMMM yyyy")</b>
+                </p>
+            </div>
+            <div class="w-50 ps-2">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1 me-2">
+                        <label for="deOverview2" class="demo-text mb-1">
+                            End Date
+                        </label>
+                        <DxDateEdit @bind-Date="@DatePickerEnd"
+                                    CssClass="w-100"
+                                    InputId="deOverview2" />
+                    </div>
+                    <div>
+                        <button class="btn btn-primary mt-4" @onclick="OnSearchClicked">Search</button>
+                    </div>
+                </div>
+                <p class="demo-text mt-3">
+                    Selected Date: <b>@DatePickerEnd.ToString("dddd, dd MMMM yyyy")</b>
+                </p>
+            </div>
+        </div>
+
+        <DxGrid @ref="Grid"
+                Data="@forecasts"
+                CssClass="mw-1100"
+                ShowSearchBox="true"
+                PagerPosition="GridPagerPosition.Bottom"
+                PageSizeSelectorVisible="true"
+                PageSizeSelectorItems="@(new int[] { 10, 15, 25, 50, 100 })"
+                PageSize="15"
+                ColumnResizeMode="GridColumnResizeMode.ColumnsContainer"
+                TextWrapEnabled="false"
+                CustomizeSummaryDisplayText="Grid_CustomizeSummaryDisplayText"
+                >
+            <Columns>
+                <DxGridDataColumn Caption="" FieldName="" Width="60">
+                    <CellDisplayTemplate>
+                        @{
+                            // Ambil seluruh objek data baris saat ini
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                        <button class="btn btn-warning" disabled="@(stockReport.CODE1 == "2")" @onclick="() => EditRow(stockReport)">
+                            Edit
+                        </button>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="No" FieldName="Nomor" MinWidth="45">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="Code1" FieldName="CODE1">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ARTICLE" FieldName="ARTICLE" MinWidth="140">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="BOM" FieldName="BOM" MinWidth="80">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="RECRET" FieldName="REC_RET" MinWidth="90">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="RET_TRF" FieldName="RET_TRF" MinWidth="90">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="SHOPEE" FieldName="S_120" MinWidth="90">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="TOKPED" FieldName="S_127" MinWidth="90">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="TIKTOK" FieldName="S_131" MinWidth="90">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ZALORA" FieldName="S_132" MinWidth="90">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="WEB" FieldName="S_G01" MinWidth="80">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="TOTAL SLS" FieldName="SLS" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="EOM" FieldName="EOM" MinWidth="80">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ST%" FieldName="STPERSEN" MinWidth="80">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="EOM_DC" FieldName="EOM_DC" MinWidth="80">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="RET_SLS" FieldName="RET_SLS" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ADJ" FieldName="ADJ" MinWidth="80">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ADJ_OPN" FieldName="ADJ_OPN" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="SLS_RP" FieldName="SLS_RP" MinWidth="140">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="EOM_RP" FieldName="EOM_RP" MinWidth="140">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="SSR" FieldName="ADJ" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                @* NEW *@
+                <DxGridDataColumn Caption="STATUS_HARGA" FieldName="STATUS_HARGA" MinWidth="140">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                            Console.WriteLine($"CODE1: {stockReport.CODE1}, STATUS_HARGA: {stockReport.STATUS_HARGA}, CSS Class: {cssClass}");
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="ORD_NO" FieldName="ORD_NO" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="QTY_ORD" FieldName="QTY_ORD" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+            </Columns>
+            <TotalSummary>
+                <DxGridSummaryItem FieldName="ARTICLE" SummaryType="GridSummaryItemType.Count" />
+                <DxGridSummaryItem FieldName="BOM" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="REC_RET" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="RET_TRF" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="S_120" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="S_127" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="S_131" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="S_132" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="S_G01" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="SLS" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="EOM" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="ADJ" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="RET_SLS" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="SLS_RP" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="EOM_RP" SummaryType="GridSummaryItemType.Sum" />
+            </TotalSummary>
+            <ToolbarTemplate>
+                <DxToolbar>
+                    <DxToolbarItem Text="Export to XLSX" Click="ExportXlsx_Click" BeginGroup="true" />
+                    <DxToolbarItem Text="Export to XLS" Click="ExportXls_Click" BeginGroup="true" />
+                    <DxToolbarItem Text="Export to CSV" Click="ExportCsv_Click" BeginGroup="true" />
+                    @* <DxToolbarItem Context="itemCtx" Alignment="ToolbarItemAlignment.Right" BeginGroup="true">
+                        <Template>
+                            <DxCheckBox @bind-Checked="@ExportSelectedRowsOnly">Export Selected Rows Only</DxCheckBox>
+                        </Template>
+                    </DxToolbarItem> *@
+                </DxToolbar>
+            </ToolbarTemplate>
+        </DxGrid>
+        <!-- Modal Popup -->
+        @if (isModalVisible)
+        {
+            <div class="modal fade show" tabindex="-1" style="display: block;" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Repeat Order Form</h5>
+                            <button type="button" class="close" aria-label="Close" @onclick="ClosePopup">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Order No:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.ORD_NO">
+                            </div>
+                            <div class="form-group">
+                                <label>Article:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.ARTICLE">
+                            </div>
+                            <div class="form-group">
+                                <label>Status Harga:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.STATUS_HARGA">
+                            </div>
+                            <div class="form-group">
+                                <label>Sales:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.SLS">
+                            </div>
+                            <div class="form-group">
+                                <label>EOM Online:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.EOM">
+                            </div>
+                            <div class="form-group">
+                                <label>EOM Offline:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.EOM_DC">
+                            </div>
+                            <div class="form-group">
+                                <label>Qty Repeat Ord:</label>
+                                <input type="text" class="form-control" @bind="selectedStockReport.QTY_ORD">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" @onclick="SubmitRepeatOrder">Submit Repeat Order</button>
+                            <button type="button" class="btn btn-secondary" @onclick="ClosePopup">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-backdrop fade show"></div>
+        }
+
+    }
+</div>
+
+@code {
+    DateTime DatePickerStart { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+    DateTime DatePickerEnd { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+
+
+    private StockReport[]? forecasts;
+    bool ExportSelectedRowsOnly { get; set; }
+    IGrid Grid { get; set; }
+    bool isLoading = true;
+    private bool dataLoaded = false;
+
+    private bool isModalVisible = false;
+    private StockReport? selectedStockReport;
+
+    private void ShowPopup(StockReport stockReport)
+    {
+        selectedStockReport = stockReport;
+        isModalVisible = true;
+    }
+
+    private void ClosePopup()
+    {
+        isModalVisible = false;
+        selectedStockReport = null;
+        StateHasChanged();
+    }
+
+    private void SubmitRepeatOrder()
+    {
+        if (selectedStockReport != null)
+        {
+            Console.WriteLine($"Submitting repeat order for: {selectedStockReport.Nomor}");
+        }
+        ClosePopup();
+    }
+
+    void EditRow(StockReport stockReport)
+    {
+        Console.WriteLine($"Edit button clicked for: {stockReport.Nomor}");
+        selectedStockReport = stockReport;
+        isModalVisible = true;
+        StateHasChanged();
+    }
+
+    string GetRowClass(object data)
+    {
+        if (data is StockReport stockReport)
+        {
+            Console.WriteLine($"Row: {stockReport.Nomor}, CODE1: {stockReport.CODE1}");
+            return stockReport.CODE1 == "2" ? "highlight-row" : "";
+        }
+        return "";
+    }
+
+    async Task OnSearchClicked()
+    {
+        isLoading = true;
+        StateHasChanged();
+
+        string dtstart = DatePickerStart.ToString("dd-MMM-yyyy", new CultureInfo("id-ID"));
+        string dtend = DatePickerEnd.ToString("dd-MMM-yyyy", new CultureInfo("id-ID"));
+
+        forecasts = await StockReportService.GetStockReportAsync(dtstart, dtend, 1, "888");
+
+        // Tambahkan nomor urut
+        forecasts = forecasts.Select((item, index) =>
+        {
+        item.Nomor = index + 1;
+        return item;
+        }).ToArray();
+
+        isLoading = false;
+        StateHasChanged();
+
+        Grid_FitWidths();
+    }
+
+    void Grid_FitWidths()
+    {
+        Grid.AutoFitColumnWidths();
+    }
+
+    async Task ExportXlsx_Click()
+    {
+        await Grid.ExportToXlsxAsync("ExportStockReport", new GridXlExportOptions()
+            {
+                ExportSelectedRowsOnly = ExportSelectedRowsOnly,
+                CustomizeCell = OnCustomizeCell
+            });
+    }
+
+    async Task ExportXls_Click()
+    {
+        await Grid.ExportToXlsAsync("ExportStockReport", new GridXlExportOptions()
+            {
+                ExportSelectedRowsOnly = ExportSelectedRowsOnly,
+                CustomizeCell = OnCustomizeCell
+            });
+    }
+
+    async Task ExportCsv_Click()
+    {
+        await Grid.ExportToCsvAsync("ExportStockReport", new GridCsvExportOptions()
+            {
+                ExportSelectedRowsOnly = ExportSelectedRowsOnly
+            });
+    }
+
+    void OnCustomizeCell(GridExportCustomizeCellEventArgs args)
+    {
+        if (args.ColumnFieldName == "ContactName" && args.AreaType == SheetAreaType.DataArea)
+            args.Formatting.Font = new XlCellFont() { Italic = true };
+        args.Handled = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !dataLoaded)
+        {
+            string dtstart = DatePickerStart.ToString("dd-MMM-yyyy", new CultureInfo("id-ID"));
+            string dtend = DatePickerEnd.ToString("dd-MMM-yyyy", new CultureInfo("id-ID"));
+
+            forecasts = await StockReportService.GetStockReportAsync(dtstart, dtend, 1, "888");
+
+            // Tambahkan nomor urut
+            forecasts = forecasts.Select((item, index) =>
+            {
+                item.Nomor = index + 1;
+                return item;
+            }).ToArray();
+
+            dataLoaded = true;
+            isLoading = false;
+
+            StateHasChanged();
+
+            Grid_FitWidths();
+        }
+    }
+
+    void Grid_CustomizeSummaryDisplayText(GridCustomizeSummaryDisplayTextEventArgs e)
+    {
+        if (e.Item.FieldName == "BOM" || e.Item.FieldName == "REC_RET" || e.Item.FieldName == "RET_TRF" ||
+        e.Item.FieldName == "S_120" || e.Item.FieldName == "S_127" || e.Item.FieldName == "S_131" ||
+        e.Item.FieldName == "S_132" || e.Item.FieldName == "S_G01" || e.Item.FieldName == "SLS" ||
+        e.Item.FieldName == "EOM" || e.Item.FieldName == "ADJ" || e.Item.FieldName == "RET_SLS")
+            e.DisplayText = string.Format("{0}", e.Value);
+        else if (e.Item.FieldName == "ARTICLE")
+        {
+            e.DisplayText = "Grand Total : ";
+        }
+        else if (e.Item.FieldName == "SLS_RP" || e.Item.FieldName == "EOM_RP")
+        {
+            if (decimal.TryParse(e.Value?.ToString(), out var retTrfValue))
+            {
+                e.DisplayText = retTrfValue.ToString("N0");
+            }
+            else
+            {
+                e.DisplayText = string.Empty;
+            }
+        }
+    }
+}

@@ -1,0 +1,2 @@
+D:\fix\DxReportingWeb\publish\emcc-props.json
+D:\fix\DxReportingWeb\publish\web.config

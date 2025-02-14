@@ -1,0 +1,177 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\DxReportingWeb.bundle.scp.css",
+      "PackagePath": "staticwebassets\\DxReportingWeb.ea9am6mefr.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\bootstrap\\bootstrap.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.css"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\office-white.bs5.min.css",
+      "PackagePath": "staticwebassets\\css\\office-white.bs5.min.css"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\FONT-LICENSE.txt",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\FONT-LICENSE.txt"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\ICON-LICENSE.txt",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\ICON-LICENSE.txt"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\README.md"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\open.iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open.iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\log-in.svg",
+      "PackagePath": "staticwebassets\\images\\account\\log-in.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\log-out.svg",
+      "PackagePath": "staticwebassets\\images\\account\\log-out.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\manage-email.svg",
+      "PackagePath": "staticwebassets\\images\\account\\manage-email.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\manage-password.svg",
+      "PackagePath": "staticwebassets\\images\\account\\manage-password.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\manage-personal.svg",
+      "PackagePath": "staticwebassets\\images\\account\\manage-personal.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\manage-profile.svg",
+      "PackagePath": "staticwebassets\\images\\account\\manage-profile.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\manage-two-factor.svg",
+      "PackagePath": "staticwebassets\\images\\account\\manage-two-factor.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\providers\\facebook-logo.svg",
+      "PackagePath": "staticwebassets\\images\\account\\providers\\facebook-logo.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\providers\\google-logo.svg",
+      "PackagePath": "staticwebassets\\images\\account\\providers\\google-logo.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\providers\\microsoft-logo.svg",
+      "PackagePath": "staticwebassets\\images\\account\\providers\\microsoft-logo.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\providers\\x-logo.svg",
+      "PackagePath": "staticwebassets\\images\\account\\providers\\x-logo.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\settings.svg",
+      "PackagePath": "staticwebassets\\images\\account\\settings.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\account\\user.svg",
+      "PackagePath": "staticwebassets\\images\\account\\user.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\back.svg",
+      "PackagePath": "staticwebassets\\images\\back.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\cards.svg",
+      "PackagePath": "staticwebassets\\images\\cards.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\close.svg",
+      "PackagePath": "staticwebassets\\images\\close.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\counter.svg",
+      "PackagePath": "staticwebassets\\images\\counter.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\demos.svg",
+      "PackagePath": "staticwebassets\\images\\demos.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\doc.svg",
+      "PackagePath": "staticwebassets\\images\\doc.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\home.svg",
+      "PackagePath": "staticwebassets\\images\\home.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\logo.svg",
+      "PackagePath": "staticwebassets\\images\\logo.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\menu.svg",
+      "PackagePath": "staticwebassets\\images\\menu.svg"
+    },
+    {
+      "Id": "D:\\fix\\DxReportingWeb\\DxReportingWeb\\DxReportingWeb\\wwwroot\\images\\weather.svg",
+      "PackagePath": "staticwebassets\\images\\weather.svg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.DxReportingWeb.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.DxReportingWeb.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.DxReportingWeb.props",
+      "PackagePath": "build\\DxReportingWeb.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.DxReportingWeb.props",
+      "PackagePath": "buildMultiTargeting\\DxReportingWeb.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.DxReportingWeb.props",
+      "PackagePath": "buildTransitive\\DxReportingWeb.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

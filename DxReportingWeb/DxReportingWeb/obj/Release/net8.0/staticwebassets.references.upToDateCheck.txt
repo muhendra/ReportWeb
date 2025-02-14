@@ -1,0 +1,2 @@
+D:\fix\DxReportingWeb\DxReportingWeb\DxReportingWeb.Client\obj\Release\net8.0\staticwebassets.build.json
+D:\fix\DxReportingWeb\DxReportingWeb\DxReportingWeb.Client\obj\Release\net8.0\staticwebassets.build.json
