@@ -7,17 +7,39 @@
 @inject StockReportService StockReportService
 
 <style>
+    .highlight-yellow {
+        background-color: yellow !important;
+        outline: 8px solid yellow !important;
+    }
+
     .highlight-cell {
-        background-color: #ADD8E6 !important; 
+        background-color: #ADD8E6 !important;
+        outline: 8px solid #ADD8E6 !important;
+        /* transform: scale(1.1); */
     }
 
     .modal {
         background: rgba(0, 0, 0, 0.5);
+        display: block; /* Pastikan modal ditampilkan */
     }
 
     .modal-content {
         border-radius: 10px;
+        margin: 10% auto; /* Pusatkan modal */
+        width: 80%; /* Sesuaikan lebar modal */
+        max-width: 500px; /* Batasi lebar maksimal */
     }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040; /* Pastikan backdrop di atas konten lain */
+    }
+
 </style>
 
 <div class="grid-container">
@@ -64,12 +86,17 @@
                 ColumnResizeMode="GridColumnResizeMode.ColumnsContainer"
                 TextWrapEnabled="false">
             <Columns>
+                <DxGridDataColumn Caption="" FieldName="" MinWidth="45">
+                    <CellDisplayTemplate>
+                        <div style="height: 100%; width: 100%;"></div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
                 <DxGridDataColumn Caption="No" FieldName="Nomor" MinWidth="45">
                     <CellDisplayTemplate>
                         <div style="height: 100%; width: 100%;"></div>
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
-                <DxGridDataColumn Caption="Code1" FieldName="CODE1">
+                <DxGridDataColumn Caption="Code1" FieldName="CODE1" Visible="false">
                     <CellDisplayTemplate>
                         <div style="height: 100%; width: 100%;"></div>
                     </CellDisplayTemplate>
@@ -174,7 +201,7 @@
                         <div style="height: 100%; width: 100%;"></div>
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
-                <DxGridDataColumn Caption="STATUS HARGA" FieldName="STATUS_HARGA" MinWidth="140">
+                <DxGridDataColumn Caption="STATUS" FieldName="STATUS_HARGA" MinWidth="140">
                     <CellDisplayTemplate>
                         <div style="height: 100%; width: 100%;"></div>
                     </CellDisplayTemplate>
@@ -234,22 +261,24 @@
                 CustomizeSummaryDisplayText="Grid_CustomizeSummaryDisplayText"
                 >
             <Columns>
-                <DxGridDataColumn Caption="" FieldName="" Width="60">
+                <DxGridDataColumn Caption="" FieldName="" Width="60" FixedPosition="GridColumnFixedPosition.Left">
                     <CellDisplayTemplate>
                         @{
                             // Ambil seluruh objek data baris saat ini
                             var stockReport = (StockReport)context.DataItem;
-                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
                         }
-                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                        <div style="height: 100%; width: 100%;">
                             @context.Value
                         </div>
-                        <button class="btn btn-warning" disabled="@(stockReport.CODE1 == "2")" @onclick="() => EditRow(stockReport)">
-                            Edit
-                        </button>
+                        @if (stockReport.CODE1 != "2")
+                        {
+                            <button class="btn btn-warning" @onclick="() => EditRow(stockReport)">
+                                Edit
+                            </button>
+                        }
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
-                <DxGridDataColumn Caption="No" FieldName="Nomor" MinWidth="45">
+                <DxGridDataColumn Caption="No" FieldName="Nomor" MinWidth="45" FixedPosition="GridColumnFixedPosition.Left">
                     <CellDisplayTemplate>
                         @{
                             var stockReport = (StockReport)context.DataItem;
@@ -260,7 +289,7 @@
                         </div>
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
-                <DxGridDataColumn Caption="Code1" FieldName="CODE1">
+                <DxGridDataColumn Caption="Code1" FieldName="CODE1" Visible="false">
                     <CellDisplayTemplate>
                         @{
                             var stockReport = (StockReport)context.DataItem;
@@ -271,7 +300,7 @@
                         </div>
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
-                <DxGridDataColumn Caption="ARTICLE" FieldName="ARTICLE" MinWidth="140">
+                <DxGridDataColumn Caption="ARTICLE" FieldName="ARTICLE" MinWidth="140" FixedPosition="GridColumnFixedPosition.Left">
                     <CellDisplayTemplate>
                         @{
                             var stockReport = (StockReport)context.DataItem;
@@ -481,17 +510,29 @@
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
                 @* NEW *@
-                <DxGridDataColumn Caption="STATUS_HARGA" FieldName="STATUS_HARGA" MinWidth="140">
-                    <CellDisplayTemplate>
+                <DxGridDataColumn Caption="TGL_REPEAT" FieldName="TGL_REPEAT" MinWidth="140">
+                        <CellDisplayTemplate>
                         @{
                             var stockReport = (StockReport)context.DataItem;
                             string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
-                            Console.WriteLine($"CODE1: {stockReport.CODE1}, STATUS_HARGA: {stockReport.STATUS_HARGA}, CSS Class: {cssClass}");
                         }
-                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            <div class="@cssClass" style="height: 100%; width: 100%;">
                             @context.Value
-                        </div>
-                    </CellDisplayTemplate>
+                            </div>
+                        </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="STATUS" FieldName="STATUS_HARGA" MinWidth="140">
+                        <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.STATUS_HARGA.Contains("SP", StringComparison.OrdinalIgnoreCase)
+                            ? "highlight-yellow"
+                            : (stockReport.CODE1 == "2" ? "highlight-cell" : "");
+                        }
+                            <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                            </div>
+                        </CellDisplayTemplate>
                 </DxGridDataColumn>
                 <DxGridDataColumn Caption="ORD_NO" FieldName="ORD_NO" MinWidth="100">
                     <CellDisplayTemplate>
@@ -505,6 +546,17 @@
                     </CellDisplayTemplate>
                 </DxGridDataColumn>
                 <DxGridDataColumn Caption="QTY_ORD" FieldName="QTY_ORD" MinWidth="100">
+                    <CellDisplayTemplate>
+                        @{
+                            var stockReport = (StockReport)context.DataItem;
+                            string cssClass = stockReport.CODE1 == "2" ? "highlight-cell" : "";
+                        }
+                        <div class="@cssClass" style="height: 100%; width: 100%;">
+                            @context.Value
+                        </div>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+                <DxGridDataColumn Caption="QTY_PICK" FieldName="QTY_PICK" MinWidth="100">
                     <CellDisplayTemplate>
                         @{
                             var stockReport = (StockReport)context.DataItem;
@@ -532,6 +584,7 @@
                 <DxGridSummaryItem FieldName="RET_SLS" SummaryType="GridSummaryItemType.Sum" />
                 <DxGridSummaryItem FieldName="SLS_RP" SummaryType="GridSummaryItemType.Sum" />
                 <DxGridSummaryItem FieldName="EOM_RP" SummaryType="GridSummaryItemType.Sum" />
+                <DxGridSummaryItem FieldName="SSR" SummaryType="GridSummaryItemType.Sum" />
             </TotalSummary>
             <ToolbarTemplate>
                 <DxToolbar>
@@ -561,27 +614,27 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Order No:</label>
-                                <input type="text" class="form-control" @bind="selectedStockReport.ORD_NO">
+                                <input type="text" class="form-control" @bind="selectedStockReport.ORD_NO" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Article:</label>
-                                <input type="text" class="form-control" @bind="selectedStockReport.ARTICLE">
+                                <input type="text" class="form-control" @bind="selectedStockReport.ARTICLE" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Status Harga:</label>
-                                <input type="text" class="form-control" @bind="selectedStockReport.STATUS_HARGA">
+                                <input type="text" class="form-control" @bind="selectedStockReport.STATUS_HARGA" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Sales:</label>
-                                <input type="text" class="form-control" @bind="selectedStockReport.SLS">
+                                <input type="text" class="form-control" @bind="selectedStockReport.SLS" disabled>
                             </div>
                             <div class="form-group">
                                 <label>EOM Online:</label>
-                                <input type="text" class="form-control" @bind="selectedStockReport.EOM">
+                                <input type="text" class="form-control" @bind="selectedStockReport.EOM" disabled>
                             </div>
                             <div class="form-group">
                                 <label>EOM Offline:</label>
-                                <input type="text" class="form-control" @bind="selectedStockReport.EOM_DC">
+                                <input type="text" class="form-control" @bind="selectedStockReport.EOM_DC" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Qty Repeat Ord:</label>
@@ -599,12 +652,30 @@
         }
 
     }
+    <!-- Modal Sukses -->
+    @if (isSuccessPopupVisible)
+    {
+        <div class="modal fade show" tabindex="-1" style="display: block;" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Success</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Data telah berhasil diupdate!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    }
 </div>
 
 @code {
     DateTime DatePickerStart { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
     DateTime DatePickerEnd { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
+    private bool isSuccessPopupVisible = false; // State untuk popup sukses
 
     private StockReport[]? forecasts;
     bool ExportSelectedRowsOnly { get; set; }
@@ -628,16 +699,35 @@
         StateHasChanged();
     }
 
-    private void SubmitRepeatOrder()
+    private async Task SubmitRepeatOrder()
     {
         if (selectedStockReport != null)
         {
-            Console.WriteLine($"Submitting repeat order for: {selectedStockReport.Nomor}");
+            bool isSuccess = await StockReportService.UpdateRepeatOrder(
+                selectedStockReport.ARTICLE,
+                selectedStockReport.ORD_NO,
+                selectedStockReport.QTY_ORD
+            );
+
+            if (isSuccess)
+            {
+                Console.WriteLine("Repeat order submitted successfully.");
+                isSuccessPopupVisible = true; // Tampilkan popup sukses
+                StateHasChanged(); // Perbarui UI
+                await Task.Delay(2000); // Tunggu 2 detik
+                isSuccessPopupVisible = false; // Sembunyikan popup sukses
+                StateHasChanged(); // Perbarui UI
+                ClosePopup(); // Tutup modal utama
+            }
+            else
+            {
+                Console.WriteLine("Failed to submit repeat order.");
+                // Tampilkan pesan error jika diperlukan
+            }
         }
-        ClosePopup();
     }
 
-    void EditRow(StockReport stockReport)
+    private void EditRow(StockReport stockReport)
     {
         Console.WriteLine($"Edit button clicked for: {stockReport.Nomor}");
         selectedStockReport = stockReport;
@@ -713,6 +803,24 @@
     {
         if (args.ColumnFieldName == "ContactName" && args.AreaType == SheetAreaType.DataArea)
             args.Formatting.Font = new XlCellFont() { Italic = true };
+        if (args.AreaType == SheetAreaType.DataArea)
+        {
+            // Mengakses data baris
+            var stockReport = args.DataItem as StockReport;
+            if (stockReport != null && stockReport.CODE1 == "2" || stockReport.STATUS_HARGA.Contains("SP"))
+            {
+                // Mengatur warna latar belakang sel
+                args.Formatting.BackColor = System.Drawing.Color.LightBlue;
+                // Mengatur gaya font (opsional)
+                args.Formatting.Font = new XlCellFont() { Bold = true };
+
+                if (stockReport.STATUS_HARGA.Contains("SP", StringComparison.OrdinalIgnoreCase))
+                {
+                    args.Formatting.BackColor = System.Drawing.Color.Yellow;
+                    args.Formatting.Font = new XlCellFont() { Bold = true }; // Opsional: Atur gaya font
+                }
+            }
+        }
         args.Handled = true;
     }
 

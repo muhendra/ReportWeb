@@ -1,0 +1,117 @@
+﻿@page "/login"
+@inject NavigationManager navigation
+@inject StockReportService StockReportService
+@inject AuthState AuthState
+@inject AppState AppState
+@using DxReportingWeb.Models
+@using DxReportingWeb.Services
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using DevExpress.Blazor
+@attribute [StreamRendering(true)]
+@rendermode InteractiveServer
+
+<style>
+    .login-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
+
+    .login-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+        text-align: left;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+    .error-message {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="login-page">
+    <div class="login-container">
+        <h2>Login</h2>
+
+        <EditForm Model="@loginModel" OnValidSubmit="HandleLogin" FormName="loginForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="tbUsername">Username</label>
+                <InputText @bind-Value="@loginModel.Username" class="form-control" id="tbUsername" />
+                <ValidationMessage For="@(() => loginModel.Username)" class="error-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="tbPassword">Password</label>
+                <InputText @bind-Value="@loginModel.Password" class="form-control" id="tbPassword" type="password" />
+                <ValidationMessage For="@(() => loginModel.Password)" class="error-message" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(loginErrorMessage))
+            {
+                <div class="error-message">@loginErrorMessage</div>
+            }
+
+            <button class="btn btn-primary mt-4" type="submit">Login</button>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string loginErrorMessage;
+
+    async Task HandleLogin()
+    {
+        loginErrorMessage = string.Empty;
+        StateHasChanged();
+
+        var response = await StockReportService.Login(loginModel);
+        if (response.Success)
+        {
+            AuthState.SetAuthenticated(true);
+            navigation.NavigateTo("/", forceLoad: true);
+        }
+        else
+        {
+            loginErrorMessage = "Username atau password salah";
+            StateHasChanged();
+        }
+    }
+}

@@ -1,6 +1,7 @@
 using DxReportingWeb.Components;
 using DxReportingWeb.Services;
 using DxReportingWeb.Client.Pages;
+using DxReportingWeb.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddSingleton<StockReportService>();
+
+builder.Services.AddSingleton<UserAccountService>();
+
+builder.Services.AddSingleton<AuthState>();
+
+builder.Services.AddSingleton<AppState>();
 
 builder.Services.AddSingleton<MyDataService>();
 

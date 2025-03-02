@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using DxReportingWeb.Models;
 
 public class StockReportService
 {
@@ -70,8 +71,10 @@ public class StockReportService
                                     SLS_RP = reader.IsDBNull(reader.GetOrdinal("SLS_RP")) ? 0.0 : reader.GetDouble(reader.GetOrdinal("SLS_RP")),
                                     EOM_RP = reader.IsDBNull(reader.GetOrdinal("EOM_RP")) ? 0.0 : reader.GetDouble(reader.GetOrdinal("EOM_RP")),
                                     ORD_NO = reader.IsDBNull(reader.GetOrdinal("ORD_NO")) ? 0 : reader.GetInt32(reader.GetOrdinal("ORD_NO")),
-                                    STATUS_HARGA = reader.IsDBNull(reader.GetOrdinal("STATUS_HARGA")) ? "" : reader.GetString(reader.GetOrdinal("STATUS_HARGA")),
-                                    QTY_ORD = reader.IsDBNull(reader.GetOrdinal("QTY_ORD")) ? 0 : reader.GetInt32(reader.GetOrdinal("QTY_ORD"))
+                                    STATUS_HARGA = reader.IsDBNull(reader.GetOrdinal("STATUS_HARGA")) ? "-" : reader.GetString(reader.GetOrdinal("STATUS_HARGA")),
+                                    QTY_ORD = reader.IsDBNull(reader.GetOrdinal("QTY_ORD")) ? 0 : reader.GetInt32(reader.GetOrdinal("QTY_ORD")),
+                                    QTY_PICK = reader.IsDBNull(reader.GetOrdinal("QTY_PICK")) ? 0 : reader.GetInt32(reader.GetOrdinal("QTY_PICK")),
+                                    TGL_REPEAT = reader.IsDBNull(reader.GetOrdinal("TGL_REPEAT")) ? "-" : reader.GetString(reader.GetOrdinal("TGL_REPEAT"))
                                     //SSR = reader.IsDBNull(reader.GetOrdinal("SSR")) ? 0 : reader.GetInt32(reader.GetOrdinal("SSR")),
                                 });
                             }
@@ -92,7 +95,147 @@ public class StockReportService
         return reports.ToArray();
     }
 
+    public async Task<bool> UpdateRepeatOrder(string article, int ord_no, int qty_ord)
+    {
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new SqlCommand("SP_PROC_INSERT_REPEAT_ORDER_FROM_MONITORING", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Input parameters
+                    command.Parameters.Add(new SqlParameter("@ARTICLE", SqlDbType.VarChar) { Value = article });
+                    command.Parameters.Add(new SqlParameter("@ORD_NO", SqlDbType.Int) { Value = ord_no });
+                    command.Parameters.Add(new SqlParameter("@QTY_ORD", SqlDbType.Int) { Value = qty_ord });
+
+                    await command.ExecuteNonQueryAsync();
+
+                    return true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Database error: {ex.Message}");
+            return false;
+        }
+    }
+
+    public async Task<Response> Login(LoginModel loginModel)
+    {
+        try
+        {
+            // Validasi input
+            if (string.IsNullOrWhiteSpace(loginModel.Username))
+            {
+                return new Response { Success = false, Message = "Mohon isi username." };
+            }
+
+            if (string.IsNullOrWhiteSpace(loginModel.Password))
+            {
+                return new Response { Success = false, Message = "Mohon isi password." };
+            }
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new SqlCommand("SP_GET_USER_LOGIN", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Input parameters
+                    command.Parameters.Add(new SqlParameter("@USER_CODE", SqlDbType.VarChar) { Value = loginModel.Username });
+                    command.Parameters.Add(new SqlParameter("@PASS_CODE", SqlDbType.VarChar) { Value = loginModel.Password });
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync()) // Hanya membaca satu baris pertama
+                        {
+                            return new Response
+                            {
+                                Success = true,
+                                Message = "Login berhasil.",
+                                USER_CODE = reader["USER_CODE"].ToString(),
+                                USER_NAME = reader["USER_NAME"].ToString()
+                            };
+                        }
+                        else
+                        {
+                            return new Response { Success = false, Message = "Username atau password salah." };
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Database error: {ex.Message}");
+            return new Response { Success = false, Message = "Terjadi kesalahan pada server." };
+        }
+    }
+
+    public async Task<Response> Login2(string username, string password)
+    {
+        try
+        {
+            // Validasi input
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return new Response { Success = false, Message = "Mohon isi username." };
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return new Response { Success = false, Message = "Mohon isi password." };
+            }
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new SqlCommand("SP_GET_USER_LOGIN", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Input parameters
+                    command.Parameters.Add(new SqlParameter("@USER_CODE", SqlDbType.VarChar) { Value = username });
+                    command.Parameters.Add(new SqlParameter("@PASS_CODE", SqlDbType.VarChar) { Value = password });
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync()) // Hanya membaca satu baris pertama
+                        {
+                            return new Response
+                            {
+                                Success = true,
+                                Message = "Login berhasil.",
+                                USER_CODE = reader["USER_CODE"].ToString(),
+                                USER_NAME = reader["USER_NAME"].ToString()
+                            };
+                        }
+                        else
+                        {
+                            return new Response { Success = false, Message = "Username atau password salah." };
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Database error: {ex.Message}");
+            return new Response { Success = false, Message = "Terjadi kesalahan pada server." };
+        }
+    }
+
 }
+
+
 
 public class StockReport
 {
@@ -132,5 +275,7 @@ public class StockReport
     public int S_131 { get; set; }              // S_131
     public int S_132 { get; set; }              // S_132
     public int S_G01 { get; set; }              // S_G01
-    public int SSR {  get; set; }   
+    public int SSR {  get; set; }
+    public int QTY_PICK { get; set; }
+    public string? TGL_REPEAT { get; set; }
 }

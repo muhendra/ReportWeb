@@ -29,6 +29,8 @@ namespace DxReportingWeb.Services
             public string? Article { get; set; }
             public string? Code { get; set; }
         }
+
+
     }
 
 }
